@@ -5,7 +5,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @SuperBuilder(setterPrefix = "with")
 @Getter
@@ -20,7 +22,7 @@ public class Product extends DataEntity {
     @Column(name = "name", nullable = false, length = 120)
     private String name;
 
-    @Column(name = "description")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "price", nullable = false)
@@ -35,13 +37,15 @@ public class Product extends DataEntity {
     @Column(name = "ean")
     private String ean;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Column(name = "image")
-    private String imageUrl;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Set<Image> images = new HashSet<>();
 
-    @Column(nullable = false)
+    @Column(name = "active", nullable = false)
     private Boolean active;
 
     @Override

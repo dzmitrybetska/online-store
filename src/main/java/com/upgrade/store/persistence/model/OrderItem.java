@@ -18,14 +18,18 @@ import java.util.Objects;
 public class OrderItem extends DataEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "price", nullable = false)
-    private BigDecimal priceOrderItem;
+    @Column(name = "unit_price", nullable = false)
+    private BigDecimal unitPrice;
 
     @Override
     public boolean equals(Object o) {

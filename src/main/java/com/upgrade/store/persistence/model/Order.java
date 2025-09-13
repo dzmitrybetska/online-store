@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,17 +25,15 @@ public class Order extends DataEntity {
     @Column(name = "orderDate", nullable = false)
     private LocalDateTime orderDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private OrderStatus status;
-
-    @Column(name = "totalAmount", nullable = false)
-    private BigDecimal totalAmount;
-
-    @OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<OrderItem> items = new HashSet<>(20);
 
-    private String shippingAddress;
+    @Embedded
+    private DeliveryAddress address;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Set<OrderStatusHistory> histories = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "paymentMethod", nullable = false)
