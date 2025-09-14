@@ -10,7 +10,7 @@ import java.util.Objects;
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"order", "product"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -30,17 +30,4 @@ public class OrderItem extends DataEntity {
 
     @Column(name = "unit_price", nullable = false)
     private BigDecimal unitPrice;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OrderItem orderItem = (OrderItem) o;
-        return Objects.equals(getId(), orderItem.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"parentCategory", "subCategories", "createdByUser"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

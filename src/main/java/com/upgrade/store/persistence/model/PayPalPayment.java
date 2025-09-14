@@ -6,8 +6,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Objects;
-
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
@@ -15,9 +13,14 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "images")
-public class Image extends DataEntity {
+@Table(name = "paypal_payments")
+public class PayPalPayment extends Payment{
 
-    @Column(name = "image", nullable = false)
-    private String url;
+    @Column(name = "paypal_account", nullable = false)
+    private String paypalAccount;
+
+    @Override
+    public PaymentMethod getMethod() {
+        return PaymentMethod.PAYPAL;
+    }
 }

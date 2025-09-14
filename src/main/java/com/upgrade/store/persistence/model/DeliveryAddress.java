@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-@Table(name = "delivery_addresses")
 public class DeliveryAddress {
 
     @Column(name = "zipcode", length = 6, nullable = false)

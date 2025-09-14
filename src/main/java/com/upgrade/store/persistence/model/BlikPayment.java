@@ -6,8 +6,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Objects;
-
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
@@ -15,9 +13,17 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "images")
-public class Image extends DataEntity {
+@Table(name = "blik_payments")
+public class BlikPayment extends Payment{
 
-    @Column(name = "image", nullable = false)
-    private String url;
+    @Column(name = "blik_code", nullable = false, length = 6)
+    private String blikCode;
+
+    @Column(name = "phone_number", length = 15)
+    private String phoneNumber;
+
+    @Override
+    public PaymentMethod getMethod() {
+        return PaymentMethod.BLIK;
+    }
 }

@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@SuperBuilder(setterPrefix = "with")
+import java.util.Objects;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,5 +23,18 @@ public class DataEntity {
 
     public String toString() {
         return "(id=" + this.getId() + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataEntity that = (DataEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

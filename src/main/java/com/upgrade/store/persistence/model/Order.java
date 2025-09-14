@@ -6,12 +6,14 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"account", "items", "histories", "payments"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -35,7 +37,11 @@ public class Order extends DataEntity {
     @JoinColumn(name = "order_id", nullable = false)
     private Set<OrderStatusHistory> histories = new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "paymentMethod", nullable = false)
-    private PaymentMethod paymentMethod;
+    @OneToMany(mappedBy = "order", orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Payment> payments;
+
+    @PrePersist
+    public void prePersist() {
+        this.orderDate = LocalDateTime.now();
+    }
 }

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = "changedBy")
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
