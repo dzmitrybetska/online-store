@@ -11,7 +11,7 @@ import java.util.Set;
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"user", "orders"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -37,17 +37,4 @@ public class UserAccount extends DataEntity {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Order> orders = new HashSet<>();
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserAccount userAccount = (UserAccount) o;
-        return Objects.equals(getId(), userAccount.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
 }

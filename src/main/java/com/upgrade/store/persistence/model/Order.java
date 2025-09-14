@@ -4,15 +4,16 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true, exclude = {"account", "items", "histories", "payments"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -26,19 +27,21 @@ public class Order extends DataEntity {
     @Column(name = "orderDate", nullable = false)
     private LocalDateTime orderDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private OrderStatus status;
-
-    @Column(name = "totalAmount", nullable = false)
-    private BigDecimal totalAmount;
-
-    @OneToMany(mappedBy = "order", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<OrderItem> items = new HashSet<>(20);
 
-    private String shippingAddress;
+    @Embedded
+    private DeliveryAddress address;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "paymentMethod", nullable = false)
-    private PaymentMethod paymentMethod;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Set<OrderStatusHistory> histories = new HashSet<>();
+
+    @OneToMany(mappedBy = "order", orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Payment> payments;
+
+    @PrePersist
+    public void prePersist() {
+        this.orderDate = LocalDateTime.now();
+    }
 }
