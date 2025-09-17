@@ -6,8 +6,6 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Objects;
-
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter

@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Entity
 @Table(name = "paypal_payments")
-public class PayPalPayment extends Payment{
+public class PayPalPayment extends Payment {
 
     @Column(name = "paypal_account", nullable = false)
     private String paypalAccount;

@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Entity
 @Table(name = "card_payments")
-public class CardPayment extends Payment{
+public class CardPayment extends Payment {
 
     @Column(name = "card_number", nullable = false, length = 20)
     private String maskedCardNumber;

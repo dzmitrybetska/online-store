@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @Entity
 @Table(name = "blik_payments")
-public class BlikPayment extends Payment{
+public class BlikPayment extends Payment {
 
     @Column(name = "blik_code", nullable = false, length = 6)
     private String blikCode;

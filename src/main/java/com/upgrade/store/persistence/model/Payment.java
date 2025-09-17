@@ -6,7 +6,6 @@ import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @SuperBuilder(setterPrefix = "with")
 @Getter
@@ -17,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "payments")
-public abstract class Payment extends DataEntity{
+public abstract class Payment extends DataEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
