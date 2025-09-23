@@ -34,6 +34,6 @@ public class UserAccount extends DataEntity {
     @CollectionTable(name = "addresses", joinColumns = @JoinColumn(name = "user_account_id"))
     private Set<DeliveryAddress> addresses = new HashSet<>(3);
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Order> orders = new HashSet<>();
 }
