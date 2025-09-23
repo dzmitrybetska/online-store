@@ -22,7 +22,7 @@ public class Category extends DataEntity {
     @JoinColumn(name = "parent_category_id")
     private Category parentCategory;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Category> subCategories = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
