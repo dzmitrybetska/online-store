@@ -32,6 +32,12 @@ public class Category extends DataEntity {
     @Column(name = "date_of_creation", nullable = false, updatable = false)
     private LocalDateTime timeOfCreation;
 
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 100, unique = true, nullable = false)
     private String name;
+
+    @Column(name = "code", nullable = false, unique = true, length = 10)
+    private String code;
+
+    @Column(name = "active", nullable = false)
+    private Boolean active;
 }

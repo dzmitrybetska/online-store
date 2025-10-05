@@ -16,6 +16,6 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "images")
 public class Image extends DataEntity {
 
-    @Column(name = "image", nullable = false)
-    private String url;
+    @Column(name = "key", nullable = false)
+    private String key;
 }

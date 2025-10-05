@@ -11,6 +11,9 @@ spring:
       ddl-auto: create
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
 server:
   port: 8081
 
@@ -18,3 +21,9 @@ aws:
   s3:
     bucket: my-online-store-bucket
     region: eu-north-1
+
+app:
+  api:
+    uriPrefix: /api/v1
+  sku:
+    padding: 8

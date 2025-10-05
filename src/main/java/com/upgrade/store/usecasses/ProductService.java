@@ -2,6 +2,7 @@ package com.upgrade.store.usecasses;
 
 import com.upgrade.store.usecasses.dto.ProductRequest;
 import com.upgrade.store.usecasses.dto.ProductResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

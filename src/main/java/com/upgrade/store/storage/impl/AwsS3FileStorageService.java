@@ -1,11 +1,13 @@
 package com.upgrade.store.storage.impl;
 
 import com.upgrade.store.api.exception.UploadFileException;
-import com.upgrade.store.storage.S3Service;
+import com.upgrade.store.storage.FileStorageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
@@ -13,20 +15,20 @@ import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
-public class S3ServiceImpl implements S3Service {
+public class AwsS3FileStorageService implements FileStorageService {
 
     @Value("${aws.s3.bucket}")
     private String bucket;
     private final S3Client client;
 
     @Override
-    public String uploadFile(String productId, MultipartFile file) {
-        String key = "products/" + productId + "/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
+    public String uploadFile(Long productId, MultipartFile file) {
+        String key = generateKey(productId, file);
 
         PutObjectRequest request = PutObjectRequest.builder()
                 .bucket(bucket)
@@ -35,18 +37,25 @@ public class S3ServiceImpl implements S3Service {
                 .contentType(file.getContentType())
                 .build();
 
-        try (InputStream is = file.getInputStream()) {
-            RequestBody requestBody = RequestBody.fromInputStream(is, file.getSize());
-            client.putObject(request, requestBody);
+        try {
+            byte[] bytes = file.getBytes();
+            client.putObject(request, RequestBody.fromBytes(bytes));
+            log.debug("Uploaded file [{}] to S3 bucket [{}] -> key={}", file.getOriginalFilename(), bucket, key);
             return key;
-        } catch (IOException e) {
-            throw new UploadFileException("Failed to upload file: " + e.getMessage());
+        } catch (IOException | SdkException e) {
+            throw new UploadFileException("Failed to upload file: " + file.getOriginalFilename(), e);
         }
+    }
+
+    private String generateKey(Long productId, MultipartFile file) {
+        return "products/" + productId + "/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
     }
 
     @Override
     public String getPublicUrl(String key) {
-        return "https://" + bucket + ".s3." + client.serviceClientConfiguration().region().id() + ".amazonaws.com/" + key;
+        return "https://" + bucket + ".s3."
+                + client.serviceClientConfiguration().region().id()
+                + ".amazonaws.com/" + key;
     }
 
     @Override

@@ -2,9 +2,9 @@ package com.upgrade.store.storage;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public interface S3Service {
+public interface FileStorageService {
 
-    String uploadFile(String productId, MultipartFile file);
+    String uploadFile(Long productId, MultipartFile file);
 
     String getPublicUrl(String key);
 

@@ -13,4 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> getProductByEan(String ean);
 
     List<Product> getProductsByCategory_Id(Long categoryId);
+
+    boolean existsBySku(String sku);
 }
