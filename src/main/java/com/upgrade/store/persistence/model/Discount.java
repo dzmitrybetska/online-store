@@ -1,13 +1,13 @@
 package com.upgrade.store.persistence.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @SuperBuilder(setterPrefix = "with")
 @Getter
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "discounts")
-public class Discount extends DataEntity{
+public class Discount extends DataEntity {
 
     @Column(name = "discount_percent", precision = 5, scale = 2, nullable = false)
     private BigDecimal discountPercent;
@@ -27,4 +27,12 @@ public class Discount extends DataEntity{
 
     @Column(name = "discount_end", nullable = false)
     private LocalDateTime discountEnd;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "discounts_products",
+            joinColumns = @JoinColumn(name = "discount_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> products = new HashSet<>();
 }

@@ -1,10 +1,10 @@
 package com.upgrade.store.usecasses.dto;
 
-import com.upgrade.store.persistence.model.Category;
-import com.upgrade.store.persistence.model.Image;
+import com.upgrade.store.persistence.model.ProductStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,14 +30,20 @@ public record ProductRequest(
         @Schema(defaultValue = "23", description = "Enter the quantity of the product")
         Integer quantityInStock,
 
+        @Pattern(regexp = "\\d+", message = "EAN must contain only digits")
+        @Length(min = 8, max = 13, message = "EAN cannot contain less than 8 or more than 13 digits.")
         String ean,
 
+        @NotNull(message = "Required field")
+        @Schema(description = "Enter category ID")
         Long categoryId,
 
-        @Size(message = "The maximum number of photos should not exceed 25")
+        @Size(max = 25, message = "The maximum number of photos should not exceed 25")
         @Schema(type = "string", format = "binary")
         List<MultipartFile> files,
 
-        Boolean active
+        @NotNull(message = "Required field")
+        @Schema(defaultValue = "ACTIVE", description = "Enter the product status")
+        ProductStatus status
 ) implements Serializable {
 }

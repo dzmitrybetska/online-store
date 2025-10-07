@@ -3,15 +3,14 @@ package com.upgrade.store.usecasses.mapper;
 import com.upgrade.store.persistence.model.Product;
 import com.upgrade.store.usecasses.dto.ProductRequest;
 import com.upgrade.store.usecasses.dto.ProductResponse;
-import org.mapstruct.Builder;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
+import org.mapstruct.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        builder = @Builder(disableBuilder = true))
+        builder = @Builder(disableBuilder = true),
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ProductMapper {
 
     @Mapping(target = "images", ignore = true)
@@ -20,5 +19,8 @@ public interface ProductMapper {
     Product mapToEntity(ProductRequest request);
 
     @Mapping(target = "imageUrls", source = "imageUrls")
-    ProductResponse mapToDto(Product product, List<String> imageUrls);
+    @Mapping(target = "finalPrice", source = "finalPrice")
+    @Mapping(target = "discountIDs",
+            expression = "java(product.getDiscounts().stream().map(discount -> discount.getId()).toList())")
+    ProductResponse mapToDto(Product product, List<String> imageUrls, BigDecimal finalPrice);
 }

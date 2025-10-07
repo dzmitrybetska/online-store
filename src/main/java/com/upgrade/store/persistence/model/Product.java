@@ -5,9 +5,10 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuperBuilder(setterPrefix = "with")
 @Getter
@@ -22,7 +23,7 @@ public class Product extends DataEntity {
     @Column(name = "name", nullable = false, length = 120)
     private String name;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "price", nullable = false)
@@ -34,7 +35,7 @@ public class Product extends DataEntity {
     @Column(name = "sku", length = 20, nullable = false, unique = true)
     private String sku;
 
-    @Column(name = "ean")
+    @Column(name = "ean", length = 13)
     private String ean;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,7 +50,6 @@ public class Product extends DataEntity {
     @Column(nullable = false, length = 20)
     private ProductStatus status = ProductStatus.ACTIVE;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "discount_id")
-    private Discount discount;
+    @ManyToMany(mappedBy = "products", fetch = FetchType.LAZY)
+    private Set<Discount> discounts = new HashSet<>();
 }

@@ -1,6 +1,6 @@
 package com.upgrade.store.usecasses.dto;
 
-import com.upgrade.store.persistence.model.Category;
+import com.upgrade.store.persistence.model.ProductStatus;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -10,11 +10,13 @@ public record ProductResponse(
         String name,
         String description,
         BigDecimal price,
+        BigDecimal finalPrice,
         Integer quantityInStock,
         String sku,
         String ean,
-        Category category,
+        Long categoryId,
         List<String> imageUrls,
-        Boolean active
+        ProductStatus status,
+        List<Long> discountIDs
 ) {
 }

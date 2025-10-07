@@ -1,6 +1,6 @@
 package com.upgrade.store.api.exception;
 
-public class InvalidDiscountConfigurationException extends RuntimeException{
+public class InvalidDiscountConfigurationException extends RuntimeException {
 
     public InvalidDiscountConfigurationException(String message) {
         super(message);

@@ -11,15 +11,13 @@ import com.upgrade.store.usecasses.ProductService;
 import com.upgrade.store.usecasses.dto.ProductRequest;
 import com.upgrade.store.usecasses.dto.ProductResponse;
 import com.upgrade.store.usecasses.mapper.ProductMapper;
+import com.upgrade.store.usecasses.util.DiscountManager;
 import com.upgrade.store.usecasses.util.SkuGenerateManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.upgrade.store.usecasses.util.FileUploadManager.uploadFilesWithRollback;
@@ -30,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper mapper;
     private final SkuGenerateManager skuGenerateManager;
+    private final DiscountManager discountManager;
     private final FileStorageService fileStorageService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
@@ -54,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
         savedProduct.setImages(images);
 
         List<String> imageUrls = getUrls(images);
-        return mapper.mapToDto(product, imageUrls);
+        return mapper.mapToDto(product, imageUrls, product.getPrice());
     }
 
     private List<String> getUrls(List<Image> images) {
@@ -65,8 +64,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getProductById(Long id) {
-        return productRepository.findById(id).map(product -> mapper.mapToDto(product, getUrls(product.getImages())))
+        Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("There is no category with this ID"));
+        return mapper.mapToDto(
+                product,
+                getUrls(product.getImages()),
+                discountManager.calculatePrice(product.getPrice(), product.getDiscounts())
+        );
     }
 
     @Override
