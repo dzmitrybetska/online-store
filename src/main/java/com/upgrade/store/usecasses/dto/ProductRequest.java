@@ -5,13 +5,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
 
 public record ProductRequest(
         @NotEmpty(message = "Required field")
@@ -37,10 +34,6 @@ public record ProductRequest(
         @NotNull(message = "Required field")
         @Schema(description = "Enter category ID")
         Long categoryId,
-
-        @Size(max = 25, message = "The maximum number of photos should not exceed 25")
-        @Schema(type = "string", format = "binary")
-        List<MultipartFile> files,
 
         @NotNull(message = "Required field")
         @Schema(defaultValue = "ACTIVE", description = "Enter the product status")

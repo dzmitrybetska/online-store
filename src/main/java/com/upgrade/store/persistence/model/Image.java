@@ -1,8 +1,6 @@
 package com.upgrade.store.persistence.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -18,4 +16,8 @@ public class Image extends DataEntity {
 
     @Column(name = "key", nullable = false)
     private String key;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 }

@@ -42,8 +42,7 @@ public class Product extends DataEntity {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Image> images = new ArrayList<>(25);
 
     @Enumerated(EnumType.STRING)

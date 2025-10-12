@@ -2,6 +2,7 @@ package com.upgrade.store.usecasses.util;
 
 import com.upgrade.store.api.exception.UploadFileException;
 import com.upgrade.store.persistence.model.Image;
+import com.upgrade.store.persistence.model.Product;
 import com.upgrade.store.storage.FileStorageService;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -15,23 +16,24 @@ import java.util.List;
 public class FileUploadManager {
 
     public static List<Image> uploadFilesWithRollback(
-            Long entityId,
+            Product product,
             List<MultipartFile> files,
             FileStorageService storageService
     ) {
         List<Image> images = new ArrayList<>();
+        Long productId = product.getId();
         try {
             for (MultipartFile file : files) {
-                String key = storageService.uploadFile(entityId, file);
-                images.add(new Image(key));
+                String key = storageService.uploadFile(productId, file);
+                images.add(new Image(key, product));
                 log.info("Uploaded file [{}] for entity [{}] -> key={}",
-                        file.getOriginalFilename(), entityId, key);
+                        file.getOriginalFilename(), productId, key);
             }
             return images;
         } catch (RuntimeException e) {
-            log.error("Error uploading files for entity [{}]. Rolling back uploaded images...", entityId, e);
-            rollback(images, entityId, storageService);
-            throw new UploadFileException("Failed to upload files for entity " + entityId, e);
+            log.error("Error uploading files for entity [{}]. Rolling back uploaded images...", productId, e);
+            rollback(images, productId, storageService);
+            throw new UploadFileException("Failed to upload files for entity " + productId, e);
         }
     }
 

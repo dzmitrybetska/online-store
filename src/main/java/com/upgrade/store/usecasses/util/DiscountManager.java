@@ -2,24 +2,24 @@ package com.upgrade.store.usecasses.util;
 
 import com.upgrade.store.api.exception.InvalidDiscountConfigurationException;
 import com.upgrade.store.persistence.model.Discount;
+import com.upgrade.store.persistence.model.Product;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.Set;
 
 @Component
 public class DiscountManager {
 
-    public BigDecimal calculatePrice(BigDecimal price, Set<Discount> discounts) {
-        return discounts.stream()
+    public BigDecimal calculatePrice(Product product) {
+        return product.getDiscounts().stream()
                 .filter(Objects::nonNull)
                 .filter(this::isDiscountActive)
                 .max(Comparator.comparing(Discount::getDiscountPercent))
-                .map(discount -> MoneyUtils.applyDiscount(price, discount.getDiscountPercent()))
-                .orElse(price);
+                .map(discount -> MoneyUtils.applyDiscount(product.getPrice(), discount.getDiscountPercent()))
+                .orElse(product.getPrice());
     }
 
     private boolean isDiscountActive(Discount discount) {

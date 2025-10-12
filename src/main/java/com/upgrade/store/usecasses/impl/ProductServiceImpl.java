@@ -2,34 +2,31 @@ package com.upgrade.store.usecasses.impl;
 
 import com.upgrade.store.api.exception.EntityNotFoundException;
 import com.upgrade.store.persistence.model.Category;
-import com.upgrade.store.persistence.model.Image;
 import com.upgrade.store.persistence.model.Product;
 import com.upgrade.store.persistence.repository.CategoryRepository;
 import com.upgrade.store.persistence.repository.ProductRepository;
-import com.upgrade.store.storage.FileStorageService;
+import com.upgrade.store.usecasses.ImageService;
 import com.upgrade.store.usecasses.ProductService;
 import com.upgrade.store.usecasses.dto.ProductRequest;
 import com.upgrade.store.usecasses.dto.ProductResponse;
 import com.upgrade.store.usecasses.mapper.ProductMapper;
 import com.upgrade.store.usecasses.util.DiscountManager;
 import com.upgrade.store.usecasses.util.SkuGenerateManager;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.upgrade.store.usecasses.util.FileUploadManager.uploadFilesWithRollback;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper mapper;
-    private final SkuGenerateManager skuGenerateManager;
     private final DiscountManager discountManager;
-    private final FileStorageService fileStorageService;
+    private final SkuGenerateManager skuGenerateManager;
+    private final ImageService imageService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
@@ -49,27 +46,20 @@ public class ProductServiceImpl implements ProductService {
 
         Product savedProduct = productRepository.save(product);
 
-        List<Image> images = uploadFilesWithRollback(savedProduct.getId(), request.files(), fileStorageService);
-        savedProduct.setImages(images);
-
-        List<String> imageUrls = getUrls(images);
-        return mapper.mapToDto(product, imageUrls, product.getPrice());
-    }
-
-    private List<String> getUrls(List<Image> images) {
-        return images.stream()
-                .map(image -> fileStorageService.getPublicUrl(image.getKey()))
-                .collect(Collectors.toList());
+        return mapper.mapToDto(savedProduct, new ArrayList<>(), savedProduct.getPrice());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("There is no category with this ID"));
+        List<String> urls = imageService.getUrls(product.getImages());
+
         return mapper.mapToDto(
                 product,
-                getUrls(product.getImages()),
-                discountManager.calculatePrice(product.getPrice(), product.getDiscounts())
+                urls,
+                discountManager.calculatePrice(product)
         );
     }
 
