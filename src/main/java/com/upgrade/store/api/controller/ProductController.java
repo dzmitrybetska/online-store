@@ -55,14 +55,13 @@ public class ProductController {
             summary = "Get product",
             description = "Get product by ID."
     )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "GET",
-                            content = @Content(mediaType = APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ProductResponse.class))),
-                    @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
-                    @ApiResponse(responseCode = "404", description = "Product not found")
-            })
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "GET",
+                    content = @Content(mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ProductResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
     public ResponseEntity<ProductResponse> getProductById(
             @Parameter(description = "Product ID", required = true)
             @PathVariable @NotNull(message = "Required field") Long productId

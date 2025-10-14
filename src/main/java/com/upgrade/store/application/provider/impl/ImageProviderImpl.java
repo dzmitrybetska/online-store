@@ -1,17 +1,19 @@
 package com.upgrade.store.application.provider.impl;
 
+import com.upgrade.store.api.exception.UploadFileException;
 import com.upgrade.store.application.provider.ImageProvider;
-import com.upgrade.store.application.util.FileUploadHelper;
 import com.upgrade.store.domain.model.Image;
 import com.upgrade.store.domain.model.Product;
 import com.upgrade.store.infrastructure.storage.FileStorageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ImageProviderImpl implements ImageProvider {
@@ -19,13 +21,50 @@ public class ImageProviderImpl implements ImageProvider {
     private final FileStorageService fileStorageService;
 
     @Override
-    public List<String> getImageUrls(List<Image> images) {
-        return images.stream()
-                .map(image -> fileStorageService.getPublicUrl(image.getKey()))
-                .collect(Collectors.toList());
+    public String getImageUrl(Image image) {
+        return fileStorageService.getPublicUrl(image.getKey());
     }
 
+    @Override
     public List<Image> uploadImages(Product product, List<MultipartFile> files) {
-        return FileUploadHelper.uploadFilesWithRollback(product, files, fileStorageService);
+        List<Image> images = new ArrayList<>();
+        try {
+            for (MultipartFile file : files) {
+                String key = fileStorageService.uploadFile(product.getId(), file);
+                Image image = new Image();
+                image.setKey(key);
+                image.setProduct(product);
+                images.add(image);
+                log.info("Uploaded file [{}] for product [{}] -> key={}",
+                        file.getOriginalFilename(), product.getId(), key);
+            }
+        } catch (Exception e) {
+            log.error("Error uploading images for product [{}]. Rolling back...", product.getId(), e);
+            rollback(images);
+            throw new UploadFileException("Failed to upload images for product ID " + product.getId(), e);
+        }
+        return images;
+    }
+
+    @Override
+    public void deleteImage(String key) {
+        try {
+            fileStorageService.deleteFile(key);
+            log.info("Deleted image with key={}", key);
+        } catch (Exception e) {
+            log.error("Failed to delete image with key={}", key, e);
+            throw new UploadFileException("Error deleting image with key: " + key, e);
+        }
+    }
+
+    private void rollback(List<Image> images) {
+        for (Image image : images) {
+            try {
+                fileStorageService.deleteFile(image.getKey());
+                log.info("Rolled back image [{}]", image.getKey());
+            } catch (Exception ex) {
+                log.warn("Failed to rollback image [{}]: {}", image.getKey(), ex.getMessage());
+            }
+        }
     }
 }

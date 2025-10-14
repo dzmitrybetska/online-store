@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface ImageProvider {
 
-    List<String> getImageUrls(List<Image> images);
+    String getImageUrl(Image image);
 
     List<Image> uploadImages(Product product, List<MultipartFile> files);
+
+    void deleteImage(String key);
 }

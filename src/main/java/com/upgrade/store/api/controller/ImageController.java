@@ -1,8 +1,10 @@
 package com.upgrade.store.api.controller;
 
+import com.upgrade.store.api.dto.response.ImageResponse;
 import com.upgrade.store.application.service.ImageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -39,24 +41,60 @@ public class ImageController {
             produces = APPLICATION_JSON_VALUE
     )
     @Operation(
-            summary = "Upload images for a product",
+            summary = "Upload product images",
             description = "Uploads one or more images and associates them with a given product ID."
     )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Images uploaded successfully",
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Images uploaded successfully",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = String.class))),
+                            array = @ArraySchema(schema = @Schema(implementation = ImageResponse.class)))),
             @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
-    public ResponseEntity<List<String>> saveImages(
+    public ResponseEntity<List<ImageResponse>> saveImages(
             @Parameter(description = "Product ID", required = true)
             @PathVariable @NotNull(message = "Required field") Long productId,
 
             @Parameter(description = "List of image files (max 25)", required = true)
             @NotEmpty(message = "The collection must not be empty")
-            @RequestPart("files") List<MultipartFile> files) {
+            @RequestPart("files") List<MultipartFile> files
+    ) {
         log.debug("Uploading {} image(s) for product ID {}", files.size(), productId);
         return new ResponseEntity<>(imageService.saveImages(productId, files), HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/{productId}", produces = APPLICATION_JSON_VALUE)
+    @Operation(
+            summary = "Get images for a product",
+            description = "Retrieves all images associated with a given product ID."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Images retrieved successfully",
+                    content = @Content(mediaType = APPLICATION_JSON_VALUE,
+                            array = @ArraySchema(schema = @Schema(implementation = ImageResponse.class)))),
+            @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
+            @ApiResponse(responseCode = "404", description = "Product not found")
+    })
+    public ResponseEntity<List<ImageResponse>> getImagesByProductId(
+            @Parameter(description = "Product ID", required = true)
+            @PathVariable @NotNull(message = "Required field") Long productId
+    ) {
+        return new ResponseEntity<>(imageService.getImagesByProductId(productId), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{imageId}")
+    @Operation(summary = "Delete image by ID", description = "Deletes an image by its unique ID.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Image deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid image ID"),
+            @ApiResponse(responseCode = "404", description = "Image not found")
+    })
+    public ResponseEntity<Void> deleteImage(
+            @Parameter(description = "Image ID", required = true)
+            @PathVariable @NotNull(message = "Required field") Long imageId
+    ) {
+        log.info("Deleting photo by ID: {}", imageId);
+        imageService.deleteImage(imageId);
+        return ResponseEntity.noContent().build();
     }
 }

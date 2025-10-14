@@ -54,13 +54,11 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("There is no category with this ID"));
-        List<String> urls = imageProvider.getImageUrls(product.getImages());
+        List<String> urls = product.getImages().stream()
+                .map(imageProvider::getImageUrl)
+                .toList();
 
-        return mapper.mapToDto(
-                product,
-                urls,
-                discountProvider.calculatePrice(product)
-        );
+        return mapper.mapToDto(product, urls, discountProvider.calculatePrice(product));
     }
 
     @Override
