@@ -13,8 +13,6 @@ public interface ProductService {
 
     ProductResponse getProductBySku(String sku);
 
-    ProductResponse getProductByEan(String ean);
-
     List<ProductResponse> getProductsByCategory(Long categoryId);
 
     List<ProductResponse> getAllProducts();

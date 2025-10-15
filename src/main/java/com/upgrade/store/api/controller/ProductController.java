@@ -66,6 +66,18 @@ public class ProductController {
             @Parameter(description = "Product ID", required = true)
             @PathVariable @NotNull(message = "Required field") Long productId
     ) {
-        return new ResponseEntity<>(productService.getProductById(productId), HttpStatus.OK);
+        ProductResponse productResponse = productService.getProductById(productId);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductResponse> updateProduct(
+            @Parameter(description = "Product ID", required = true)
+            @PathVariable @NotNull(message = "Required field") Long productId,
+            @Parameter()
+            @Valid @RequestBody ProductRequest request
+    ) {
+        ProductResponse productResponse = productService.updateProduct(productId, request);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 }

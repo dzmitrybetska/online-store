@@ -13,16 +13,13 @@ import java.util.List;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ProductMapper {
 
-    @Mapping(target = "images", ignore = true)
-    @Mapping(target = "sku", ignore = true)
-    @Mapping(target = "category", ignore = true)
     Product mapToEntity(ProductRequest request);
 
     @Mapping(target = "productId", expression = "java(product.getId())")
     @Mapping(target = "categoryId", expression = "java(product.getCategory().getId())")
-    @Mapping(target = "imageUrls", source = "imageUrls")
-    @Mapping(target = "finalPrice", source = "finalPrice")
     @Mapping(target = "discountIDs",
             expression = "java(product.getDiscounts().stream().map(discount -> discount.getId()).toList())")
     ProductResponse mapToDto(Product product, List<String> imageUrls, BigDecimal finalPrice);
+
+    Product update(ProductRequest request, @MappingTarget Product product);
 }
