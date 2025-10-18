@@ -2,7 +2,7 @@ package com.upgrade.store.api.dto.request;
 
 import com.upgrade.store.domain.model.ProductStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public record ProductRequest(
-        @NotEmpty(message = "Required field")
+        @NotBlank(message = "The field cannot be empty")
         @Length(max = 150, message = "No more than 150 characters")
         @Schema(defaultValue = "Laptop Lenovo", description = "Enter the product name")
         String name,
@@ -29,6 +29,7 @@ public record ProductRequest(
 
         @Pattern(regexp = "\\d+", message = "EAN must contain only digits")
         @Length(min = 8, max = 13, message = "EAN cannot contain less than 8 or more than 13 digits.")
+        @Schema(defaultValue = "3423445422123", description = "Enter the product's ean")
         String ean,
 
         @NotNull(message = "Required field")

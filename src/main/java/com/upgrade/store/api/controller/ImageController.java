@@ -95,6 +95,6 @@ public class ImageController {
     ) {
         log.info("Deleting photo by ID: {}", imageId);
         imageService.deleteImage(imageId);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -31,3 +31,9 @@ app:
     uriPrefix: /api/v1
   sku:
     padding: 8
+
+logging:
+  level:
+    org.springframework.orm.jpa: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

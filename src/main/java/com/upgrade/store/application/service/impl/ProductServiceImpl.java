@@ -30,63 +30,65 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductResponse saveProduct(ProductRequest request) {
-        log.debug("Attempting to save new product: {}", request);
+        log.debug("[SERVICE] Attempting to save new product: [{}]", request.name());
 
         Long categoryId = request.categoryId();
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
-                    log.warn("Category with ID [{}] not found while creating product", categoryId);
+                    log.warn("[SERVICE] Category with ID [{}] not found while creating product", categoryId);
                     return new EntityNotFoundException("Category with ID " + categoryId + " not found");
                 });
 
         Long sequence = categoryRepository.getNextSkuSequence();
         String sku = skuProvider.generateSku(category.getCode(), sequence);
-        log.debug("Generated SKU [{}] for category [{}]", sku, category.getCode());
+        log.debug("[SERVICE] Generated SKU [{}] for category [{}]", sku, category.getCode());
 
+        log.debug("[SERVICE] Creating product for category [{}], sequence [{}]",
+                category.getCode(), sequence);
         Product product = productAssembler.toEntity(request, category, sku);
         Product savedProduct = productRepository.save(product);
 
-        log.info("Created new product with ID [{}], SKU [{}]", savedProduct.getId(), savedProduct.getSku());
+        log.info("[SERVICE] Created new product with ID [{}], SKU [{}]", savedProduct.getId(), savedProduct.getSku());
         return productAssembler.toResponse(savedProduct);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProductResponse getProductById(Long productId) {
-        log.debug("Fetching product by ID [{}]", productId);
+        log.debug("[SERVICE] Fetching product by ID [{}]", productId);
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> {
-                    log.warn("Product with ID [{}] not found", productId);
+                    log.warn("[SERVICE] Product with ID [{}] not found", productId);
                     return new EntityNotFoundException("Product with ID " + productId + " not found");
                 });
 
-        log.debug("Found product with ID [{}], name [{}]", product.getId(), product.getName());
+        log.info("[SERVICE] Found product with ID [{}], name [{}]", product.getId(), product.getName());
         return productAssembler.toResponse(product);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ProductResponse getProductBySku(String sku) {
-        log.debug("Fetching product by SKU [{}]", sku);
+        log.debug("[SERVICE] Fetching product by SKU [{}]", sku);
 
         Product product = productRepository.getProductBySku(sku)
                 .orElseThrow(() -> {
-                    log.warn("Product with SKU [{}] not found", sku);
+                    log.warn("[SERVICE] Product with SKU [{}] not found", sku);
                     return new EntityNotFoundException("Product with SKU " + sku + " not found");
                 });
 
-        log.debug("Found product with SKU [{}], ID [{}]", sku, product.getId());
+        log.info("[SERVICE] Found product with SKU [{}], ID [{}]", sku, product.getId());
         return productAssembler.toResponse(product);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<ProductResponse> getProductsByCategory(Long categoryId) {
-        log.debug("Fetching products for category ID [{}]", categoryId);
+        log.debug("[SERVICE] Fetching products for category ID [{}]", categoryId);
 
         List<Product> products = productRepository.getProductsByCategory_Id(categoryId);
-        log.info("Found [{}] product(s) for category ID [{}]", products.size(), categoryId);
+        log.info("[SERVICE] Found [{}] product(s) for category ID [{}]", products.size(), categoryId);
 
         return products.stream()
                 .map(productAssembler::toResponse)
@@ -96,10 +98,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public List<ProductResponse> getAllProducts() {
-        log.debug("Fetching all products");
+        log.debug("[SERVICE] Fetching all products");
 
         List<Product> products = productRepository.findAll();
-        log.info("Found [{}] total product(s)", products.size());
+
+        log.debug("[SERVICE] Product IDs: {}",
+                products.stream().map(Product::getId).toList());
+        log.info("[SERVICE] Found [{}] total product(s)", products.size());
 
         return products.stream()
                 .map(productAssembler::toResponse)
@@ -109,41 +114,42 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ProductResponse updateProduct(Long productId, ProductRequest productRequest) {
-        log.debug("Attempting to update product with ID [{}] using request: {}", productId, productRequest);
+        log.debug("[SERVICE] Attempting to update product with ID [{}] using request: {}", productId, productRequest);
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> {
-                    log.warn("Product with ID [{}] not found for update", productId);
+                    log.warn("[SERVICE] Product with ID [{}] not found for update", productId);
                     return new EntityNotFoundException("Product with ID " + productId + " not found");
                 });
 
         Long categoryId = productRequest.categoryId();
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
-                    log.warn("Category with ID [{}] not found during product update", categoryId);
+                    log.warn("[SERVICE] Category with ID [{}] not found during product update", categoryId);
                     return new EntityNotFoundException("Category with ID " + categoryId + " not found");
                 });
 
         product.setCategory(category);
         Product updatedProduct = productAssembler.update(productRequest, product);
         productRepository.save(updatedProduct);
+        log.debug("[SERVICE] Saving updated product entity: {}", updatedProduct);
 
-        log.info("Updated product with ID [{}], name [{}]", updatedProduct.getId(), updatedProduct.getName());
+        log.info("[SERVICE] Updated product with ID [{}], name [{}]", updatedProduct.getId(), updatedProduct.getName());
         return productAssembler.toResponse(updatedProduct);
     }
 
     @Override
     @Transactional
     public void deleteProduct(Long productId) {
-        log.debug("Attempting to delete product with ID [{}]", productId);
+        log.debug("[SERVICE] Attempting to delete product with ID [{}]", productId);
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> {
-                    log.warn("Product with ID [{}] not found for deletion", productId);
+                    log.warn("[SERVICE] Product with ID [{}] not found for deletion", productId);
                     return new EntityNotFoundException("Product with ID " + productId + " not found");
                 });
 
         productRepository.delete(product);
-        log.info("Deleted product with ID [{}], name [{}]", product.getId(), product.getName());
+        log.info("[SERVICE] Deleted product with ID [{}], name [{}]", product.getId(), product.getName());
     }
 }

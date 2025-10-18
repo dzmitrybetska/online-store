@@ -35,11 +35,11 @@ public class ImageProviderImpl implements ImageProvider {
                 image.setKey(key);
                 image.setProduct(product);
                 images.add(image);
-                log.info("Uploaded file [{}] for product [{}] -> key={}",
+                log.info("[Image Provider] Uploaded file [{}] for product [{}] -> key={}",
                         file.getOriginalFilename(), product.getId(), key);
             }
         } catch (Exception e) {
-            log.error("Error uploading images for product [{}]. Rolling back...", product.getId(), e);
+            log.error("[Image Provider] Error uploading images for product [{}]. Rolling back...", product.getId(), e);
             rollback(images);
             throw new UploadFileException("Failed to upload images for product ID " + product.getId(), e);
         }
@@ -50,9 +50,9 @@ public class ImageProviderImpl implements ImageProvider {
     public void deleteImage(String key) {
         try {
             fileStorageService.deleteFile(key);
-            log.info("Deleted image with key={}", key);
+            log.info("[Image Provider] Deleted image with key={}", key);
         } catch (Exception e) {
-            log.error("Failed to delete image with key={}", key, e);
+            log.error("[Image Provider] Failed to delete image with key={}", key, e);
             throw new UploadFileException("Error deleting image with key: " + key, e);
         }
     }
@@ -61,9 +61,9 @@ public class ImageProviderImpl implements ImageProvider {
         for (Image image : images) {
             try {
                 fileStorageService.deleteFile(image.getKey());
-                log.info("Rolled back image [{}]", image.getKey());
+                log.info("[Image Provider] Rolled back image [{}]", image.getKey());
             } catch (Exception ex) {
-                log.warn("Failed to rollback image [{}]: {}", image.getKey(), ex.getMessage());
+                log.warn("[Image Provider] Failed to rollback image [{}]: {}", image.getKey(), ex.getMessage());
             }
         }
     }

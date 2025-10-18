@@ -27,6 +27,8 @@ public class AwsS3FileStorageService implements FileStorageService {
 
     @Override
     public String uploadFile(Long productId, MultipartFile file) {
+        log.info("[AWS] Attempt to upload a file with name [{}] for a product with ID [{}]",
+                file.getOriginalFilename(), productId);
         String key = generateKey(productId, file);
 
         PutObjectRequest request = PutObjectRequest.builder()
@@ -38,9 +40,11 @@ public class AwsS3FileStorageService implements FileStorageService {
         try {
             byte[] bytes = file.getBytes();
             client.putObject(request, RequestBody.fromBytes(bytes));
-            log.debug("Uploaded file [{}] to S3 bucket [{}] -> key={}", file.getOriginalFilename(), bucket, key);
+            log.info("[AWS] Uploaded file [{}] to S3 bucket [{}] -> key={}", file.getOriginalFilename(), bucket, key);
             return key;
         } catch (IOException | SdkException e) {
+            log.warn("[AWS] An error occurred while uploading a file with name [{}] for a product with ID [{}]",
+                    file.getOriginalFilename(), productId);
             throw new UploadFileException("Failed to upload file: " + file.getOriginalFilename(), e);
         }
     }
@@ -51,6 +55,8 @@ public class AwsS3FileStorageService implements FileStorageService {
 
     @Override
     public String getPublicUrl(String key) {
+        log.debug("[AWS] Generate a link for a file with key [{}]", key);
+
         return "https://" + bucket + ".s3."
                 + client.serviceClientConfiguration().region().id()
                 + ".amazonaws.com/" + key;
@@ -58,10 +64,12 @@ public class AwsS3FileStorageService implements FileStorageService {
 
     @Override
     public void deleteFile(String key) {
+        log.debug("[AWS] Attempt to delete file by key {}", key);
         DeleteObjectRequest request = DeleteObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .build();
         client.deleteObject(request);
+        log.info("[AWS] The file with key [{}] has been successfully deleted from the bucket [{}]", key, bucket);
     }
 }
