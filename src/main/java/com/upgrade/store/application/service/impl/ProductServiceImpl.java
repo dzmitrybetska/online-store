@@ -29,10 +29,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponse saveProduct(ProductRequest request) {
-        log.debug("[SERVICE] Attempting to save new product: [{}]", request.name());
+    public ProductResponse saveProduct(ProductRequest productRequest) {
+        log.debug("[SERVICE] Attempting to save new product: [{}]", productRequest.name());
 
-        Long categoryId = request.categoryId();
+        Long categoryId = productRequest.categoryId();
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
                     log.warn("[SERVICE] Category with ID [{}] not found while creating product", categoryId);
@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
 
         log.debug("[SERVICE] Creating product for category [{}], sequence [{}]", category.getCode(), sequence);
 
-        Product product = productAssembler.toEntity(request, category, sku);
+        Product product = productAssembler.toEntity(productRequest, category, sku);
         Product savedProduct = productRepository.save(product);
 
         log.info("[SERVICE] Created new product with ID [{}], SKU [{}]", savedProduct.getId(), savedProduct.getSku());

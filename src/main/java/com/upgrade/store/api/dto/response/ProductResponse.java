@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public record ProductResponse(
-        Long productId,
+        Long id,
         String name,
         String description,
         BigDecimal price,

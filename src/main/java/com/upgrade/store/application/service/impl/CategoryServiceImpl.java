@@ -1,0 +1,73 @@
+package com.upgrade.store.application.service.impl;
+
+import com.upgrade.store.api.assembler.CategoryAssembler;
+import com.upgrade.store.api.dto.request.CategoryRequest;
+import com.upgrade.store.api.dto.response.CategoryDetailResponse;
+import com.upgrade.store.api.dto.response.CategoryResponse;
+import com.upgrade.store.api.exception.EntityNotFoundException;
+import com.upgrade.store.application.service.CategoryService;
+import com.upgrade.store.domain.model.Category;
+import com.upgrade.store.domain.model.User;
+import com.upgrade.store.domain.repository.CategoryRepository;
+import com.upgrade.store.domain.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class CategoryServiceImpl implements CategoryService {
+
+    private final CategoryAssembler categoryAssembler;
+    private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+
+    @Override
+    public CategoryDetailResponse saveCategory(CategoryRequest categoryRequest) {
+        Long userId = categoryRequest.userId();
+        Long parentId = categoryRequest.parentId();
+
+        log.debug("[SERVICE] User with ID [{}] creates a category with name [{}]", userId, categoryRequest.name());
+
+        User user = userRepository.findById(userId).orElseThrow(() -> {
+            log.warn("[SERVICE] User with ID [{}] not found", userId);
+            return new EntityNotFoundException("User with ID " + userId + " not found");
+        });
+
+        Category parentCategory = categoryRepository.findById(parentId).orElseThrow(() -> {
+            log.warn("[SERVICE] Parent category with ID [{}] not found when creating new category", parentId);
+            return new EntityNotFoundException("Parent category with ID " + parentId + " not found");
+        });
+
+        Category category = categoryAssembler.toEntity(categoryRequest, parentCategory, user);
+        Category savedCategory = categoryRepository.save(category);
+
+        log.info("[SERVICE] The category with ID [{}] and name [{}] was saved successfully",
+                savedCategory.getId(), savedCategory.getName());
+
+        return categoryAssembler.toDetailResponse(savedCategory);
+    }
+
+    @Override
+    public CategoryDetailResponse getCategoryById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<CategoryResponse> getAllCategories() {
+        return null;
+    }
+
+    @Override
+    public List<CategoryResponse> getSubCategories(Long parentId) {
+        return null;
+    }
+
+    @Override
+    public void deleteCategory(Long id) {
+
+    }
+}

@@ -20,7 +20,7 @@ import java.util.List;
 public class Category extends DataEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_category_id")
+    @JoinColumn(name = "parent_category_id", nullable = false)
     private Category parentCategory;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -41,4 +41,9 @@ public class Category extends DataEntity {
 
     @Column(name = "active", nullable = false)
     private Boolean active;
+
+    @PrePersist
+    public void prePersist() {
+        this.timeOfCreation = LocalDateTime.now();
+    }
 }
