@@ -27,8 +27,9 @@ public class AwsS3FileStorageService implements FileStorageService {
 
     @Override
     public String uploadFile(Long productId, MultipartFile file) {
-        log.info("[AWS] Attempt to upload a file with name [{}] for a product with ID [{}]",
+        log.debug("[AWS] Attempt to upload a file with name [{}] for a product with ID [{}]",
                 file.getOriginalFilename(), productId);
+
         String key = generateKey(productId, file);
 
         PutObjectRequest request = PutObjectRequest.builder()
@@ -64,7 +65,7 @@ public class AwsS3FileStorageService implements FileStorageService {
 
     @Override
     public void deleteFile(String key) {
-        log.debug("[AWS] Attempt to delete file by key {}", key);
+        log.info("[AWS] Attempt to delete file by key {}", key);
         DeleteObjectRequest request = DeleteObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)

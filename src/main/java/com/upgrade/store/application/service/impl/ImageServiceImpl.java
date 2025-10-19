@@ -30,12 +30,12 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Transactional
     public List<ImageResponse> saveImages(Long productId, List<MultipartFile> files) {
-        log.debug("Attempting to upload {} image(s) for product ID [{}]", files.size(), productId);
+        log.debug("[SERVICE] Attempting to upload {} image(s) for product ID [{}]", files.size(), productId);
 
         Product product = productRepository
                 .findById(productId)
                 .orElseThrow(() -> {
-                    log.warn("Failed to upload images — product with ID [{}] not found", productId);
+                    log.warn("[SERVICE] Failed to upload images — product with ID [{}] not found", productId);
                     return new EntityNotFoundException(
                             "Cannot upload images — product with ID " + productId + " not found"
                     );
@@ -44,7 +44,7 @@ public class ImageServiceImpl implements ImageService {
         List<Image> images = imageProvider.uploadImages(product, files);
         imageRepository.saveAll(images);
 
-        log.info("Uploaded {} image(s) for product ID {}", images.size(), productId);
+        log.info("[SERVICE] Uploaded [{}] image(s) for product ID [{}]", images.size(), productId);
 
         return images.stream()
                 .map(imageAssembler::toResponse)
@@ -54,9 +54,11 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Transactional(readOnly = true)
     public List<ImageResponse> getImagesByProductId(Long productId) {
-        log.debug("Fetching all images for product ID [{}]", productId);
+        log.debug("[SERVICE] Fetching all images for product ID [{}]", productId);
 
         List<Image> images = imageRepository.findAllByProductId(productId);
+
+        log.info("[SERVICE] Found [{}] image(s) for product ID [{}]", images.size(), productId);
 
         return images.stream()
                 .map(imageAssembler::toResponse)

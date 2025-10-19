@@ -41,14 +41,16 @@ public class ProductServiceImpl implements ProductService {
 
         Long sequence = categoryRepository.getNextSkuSequence();
         String sku = skuProvider.generateSku(category.getCode(), sequence);
+
         log.debug("[SERVICE] Generated SKU [{}] for category [{}]", sku, category.getCode());
 
-        log.debug("[SERVICE] Creating product for category [{}], sequence [{}]",
-                category.getCode(), sequence);
+        log.debug("[SERVICE] Creating product for category [{}], sequence [{}]", category.getCode(), sequence);
+
         Product product = productAssembler.toEntity(request, category, sku);
         Product savedProduct = productRepository.save(product);
 
         log.info("[SERVICE] Created new product with ID [{}], SKU [{}]", savedProduct.getId(), savedProduct.getSku());
+
         return productAssembler.toResponse(savedProduct);
     }
 
@@ -64,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
                 });
 
         log.info("[SERVICE] Found product with ID [{}], name [{}]", product.getId(), product.getName());
+
         return productAssembler.toResponse(product);
     }
 
@@ -79,6 +82,7 @@ public class ProductServiceImpl implements ProductService {
                 });
 
         log.info("[SERVICE] Found product with SKU [{}], ID [{}]", sku, product.getId());
+
         return productAssembler.toResponse(product);
     }
 
@@ -88,6 +92,7 @@ public class ProductServiceImpl implements ProductService {
         log.debug("[SERVICE] Fetching products for category ID [{}]", categoryId);
 
         List<Product> products = productRepository.getProductsByCategory_Id(categoryId);
+
         log.info("[SERVICE] Found [{}] product(s) for category ID [{}]", products.size(), categoryId);
 
         return products.stream()
@@ -102,8 +107,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<Product> products = productRepository.findAll();
 
-        log.debug("[SERVICE] Product IDs: {}",
-                products.stream().map(Product::getId).toList());
+        log.debug("[SERVICE] Product IDs: {}", products.stream().map(Product::getId).toList());
         log.info("[SERVICE] Found [{}] total product(s)", products.size());
 
         return products.stream()
@@ -132,9 +136,10 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         Product updatedProduct = productAssembler.update(productRequest, product);
         productRepository.save(updatedProduct);
-        log.debug("[SERVICE] Saving updated product entity: {}", updatedProduct);
 
+        log.debug("[SERVICE] Saving updated product entity: {}", updatedProduct);
         log.info("[SERVICE] Updated product with ID [{}], name [{}]", updatedProduct.getId(), updatedProduct.getName());
+
         return productAssembler.toResponse(updatedProduct);
     }
 
@@ -150,6 +155,7 @@ public class ProductServiceImpl implements ProductService {
                 });
 
         productRepository.delete(product);
+
         log.info("[SERVICE] Deleted product with ID [{}], name [{}]", product.getId(), product.getName());
     }
 }

@@ -47,12 +47,12 @@
         </encoder>
     </appender>
 
-    <logger name="com.upgrade.store.api.controllers" level="INFO" additivity="false">
+    <logger name="com.upgrade.store.api.controller" level="INFO" additivity="false">
         <appender-ref ref="API_LOG"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
 
-    <logger name="com.upgrade.store.usecasses.impl" level="DEBUG" additivity="false">
+    <logger name="com.upgrade.store.application.service.impl" level="DEBUG" additivity="false">
         <appender-ref ref="SERVICE_LOG"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
@@ -61,6 +61,23 @@
         <appender-ref ref="ERROR_LOG"/>
         <appender-ref ref="CONSOLE"/>
     </logger>
+
+    <logger name="com.upgrade.store.infrastructure" level="INFO" additivity="false">
+        <appender-ref ref="SERVICE_LOG"/>
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <springProfile name="prod">
+        <logger name="com.upgrade.store.api.controller" level="INFO"/>
+        <logger name="com.upgrade.store.application.service.impl" level="INFO"/>
+        <logger name="com.upgrade.store.infrastructure" level="INFO"/>
+    </springProfile>
+
+    <springProfile name="dev">
+        <logger name="com.upgrade.store.api.controllers" level="DEBUG"/>
+        <logger name="com.upgrade.store.application.service.impl" level="DEBUG"/>
+        <logger name="com.upgrade.store.infrastructure" level="DEBUG"/>
+    </springProfile>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>

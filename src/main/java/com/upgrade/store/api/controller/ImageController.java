@@ -59,8 +59,10 @@ public class ImageController {
             @NotEmpty(message = "The collection must not be empty")
             @RequestPart("files") List<MultipartFile> files
     ) {
-        log.debug("Uploading {} image(s) for product ID {}", files.size(), productId);
-        return new ResponseEntity<>(imageService.saveImages(productId, files), HttpStatus.CREATED);
+        log.info("[API] Uploading {} image(s) for product ID {}", files.size(), productId);
+
+        List<ImageResponse> imageResponses = imageService.saveImages(productId, files);
+        return new ResponseEntity<>(imageResponses, HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{productId}", produces = APPLICATION_JSON_VALUE)
@@ -79,7 +81,10 @@ public class ImageController {
             @Parameter(description = "Product ID", required = true)
             @PathVariable @NotNull(message = "Required field") Long productId
     ) {
-        return new ResponseEntity<>(imageService.getImagesByProductId(productId), HttpStatus.OK);
+        log.info("[API] Fetching all images for product ID [{}]", productId);
+
+        List<ImageResponse> imageResponses = imageService.getImagesByProductId(productId);
+        return new ResponseEntity<>(imageResponses, HttpStatus.OK);
     }
 
     @DeleteMapping("/{imageId}")
@@ -93,7 +98,8 @@ public class ImageController {
             @Parameter(description = "Image ID", required = true)
             @PathVariable @NotNull(message = "Required field") Long imageId
     ) {
-        log.info("Deleting photo by ID: {}", imageId);
+        log.info("[API] Deleting photo by ID: {}", imageId);
+
         imageService.deleteImage(imageId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

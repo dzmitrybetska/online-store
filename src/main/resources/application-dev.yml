@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/online_store
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: post260125DiMa
+  jpa:
+    hibernate:
+        ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  servlet:
+    multipart:
+      max-file-size: 25MB
+      max-request-size: 100MB
+
+server:
+  port: 8081
+
+aws:
+  s3:
+    bucket: my-online-store-bucket
+    region: eu-north-1
+
+logging:
+  level:
+    org.springframework.orm.jpa: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

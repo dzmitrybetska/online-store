@@ -27,6 +27,8 @@ public class ImageProviderImpl implements ImageProvider {
 
     @Override
     public List<Image> uploadImages(Product product, List<MultipartFile> files) {
+        log.debug("[Image Provider] Starting upload for {} file(s) for product [{}]", files.size(), product.getId());
+
         List<Image> images = new ArrayList<>();
         try {
             for (MultipartFile file : files) {
@@ -61,7 +63,6 @@ public class ImageProviderImpl implements ImageProvider {
         for (Image image : images) {
             try {
                 fileStorageService.deleteFile(image.getKey());
-                log.info("[Image Provider] Rolled back image [{}]", image.getKey());
             } catch (Exception ex) {
                 log.warn("[Image Provider] Failed to rollback image [{}]: {}", image.getKey(), ex.getMessage());
             }
