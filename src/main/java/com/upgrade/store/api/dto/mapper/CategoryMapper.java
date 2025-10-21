@@ -16,7 +16,8 @@ public interface CategoryMapper {
 
     Category mapToEntity(CategoryRequest categoryRequest);
 
-    CategoryResponse mapToShortDto(Category category);
+    @Mapping(target = "subCategories", expression = "java(category.getSubCategories().stream().map(this::mapToSubDto).toList())")
+    CategoryResponse mapToDto(Category category);
 
     @Mapping(target = "parentId", source = "parentCategory.id")
     @Mapping(target = "userId", source = "createdByUser.id")

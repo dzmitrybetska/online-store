@@ -1,0 +1,6 @@
+2025-10-19 19:18:17.676 [http-nio-8081-exec-6] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]
+2025-10-19 20:32:20.559 [http-nio-8081-exec-2] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]
+2025-10-19 20:33:07.499 [http-nio-8081-exec-5] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]
+2025-10-19 20:33:35.076 [http-nio-8081-exec-6] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]
+2025-10-19 20:33:35.104 [http-nio-8081-exec-6] INFO  c.u.s.a.s.impl.CategoryServiceImpl - The category with ID [4] and name [Auto goods] was saved successfully
+2025-10-19 20:34:52.841 [http-nio-8081-exec-9] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]

@@ -47,18 +47,32 @@ public class CategoryServiceImpl implements CategoryService {
 
         log.info("[SERVICE] The category with ID [{}] and name [{}] was saved successfully",
                 savedCategory.getId(), savedCategory.getName());
-
         return categoryAssembler.toDetailResponse(savedCategory);
     }
 
     @Override
-    public CategoryDetailResponse getCategoryById(Long id) {
-        return null;
+    public CategoryDetailResponse getCategoryById(Long categoryId) {
+        log.debug("[SERVICE] Fetching category by ID [{}]", categoryId);
+
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> {
+            log.warn("[SERVICE] Category with ID [{}] not found", categoryId);
+            return new EntityNotFoundException("Category with ID " + categoryId + " not found");
+        });
+
+        log.info("[SERVICE] Category with ID [{}] and name [{}] was found successfully", categoryId, category.getName());
+        return categoryAssembler.toDetailResponse(category);
     }
 
     @Override
-    public List<CategoryResponse> getAllCategories() {
-        return null;
+    public List<CategoryResponse> getCategoryTree() {
+        log.debug("[SERVICE] Fetching category tree");
+
+        List<Category> rootCategories = categoryRepository.getAllRootCategories();
+
+        log.info("[SERVICE] [{}] root categories found", rootCategories.size());
+        return rootCategories.stream()
+                .map(categoryAssembler::toShortResponse)
+                .toList();
     }
 
     @Override

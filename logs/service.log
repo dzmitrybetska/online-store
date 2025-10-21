@@ -1,6 +1,9 @@
-2025-10-19 19:18:17.676 [http-nio-8081-exec-6] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]
-2025-10-19 20:32:20.559 [http-nio-8081-exec-2] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]
-2025-10-19 20:33:07.499 [http-nio-8081-exec-5] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]
-2025-10-19 20:33:35.076 [http-nio-8081-exec-6] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]
-2025-10-19 20:33:35.104 [http-nio-8081-exec-6] INFO  c.u.s.a.s.impl.CategoryServiceImpl - The category with ID [4] and name [Auto goods] was saved successfully
-2025-10-19 20:34:52.841 [http-nio-8081-exec-9] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Auto goods]
+2025-10-21 20:20:51.852 [http-nio-8081-exec-5] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category tree
+2025-10-21 20:41:43.587 [http-nio-8081-exec-5] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category tree
+2025-10-21 20:41:43.651 [http-nio-8081-exec-5] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] [0] root categories found
+2025-10-21 20:42:42.581 [http-nio-8081-exec-1] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category by ID [1]
+2025-10-21 20:42:42.623 [http-nio-8081-exec-1] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Category with ID [1] and name [Catalog] was found successfully
+2025-10-21 20:42:52.973 [http-nio-8081-exec-2] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category by ID [2]
+2025-10-21 20:42:52.976 [http-nio-8081-exec-2] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Category with ID [2] and name [Electronics] was found successfully
+2025-10-21 20:43:02.195 [http-nio-8081-exec-3] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category by ID [3]
+2025-10-21 20:43:02.197 [http-nio-8081-exec-3] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Category with ID [3] and name [Laptops] was found successfully

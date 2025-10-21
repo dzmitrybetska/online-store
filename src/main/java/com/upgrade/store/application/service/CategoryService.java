@@ -12,7 +12,7 @@ public interface CategoryService {
 
     CategoryDetailResponse getCategoryById(Long id);
 
-    List<CategoryResponse> getAllCategories();
+    List<CategoryResponse> getCategoryTree();
 
     List<CategoryResponse> getSubCategories(Long parentId);
 

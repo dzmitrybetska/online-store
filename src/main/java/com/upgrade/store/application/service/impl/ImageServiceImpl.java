@@ -45,7 +45,6 @@ public class ImageServiceImpl implements ImageService {
         imageRepository.saveAll(images);
 
         log.info("[SERVICE] Uploaded [{}] image(s) for product ID [{}]", images.size(), productId);
-
         return images.stream()
                 .map(imageAssembler::toResponse)
                 .toList();
@@ -59,7 +58,6 @@ public class ImageServiceImpl implements ImageService {
         List<Image> images = imageRepository.findAllByProductId(productId);
 
         log.info("[SERVICE] Found [{}] image(s) for product ID [{}]", images.size(), productId);
-
         return images.stream()
                 .map(imageAssembler::toResponse)
                 .toList();

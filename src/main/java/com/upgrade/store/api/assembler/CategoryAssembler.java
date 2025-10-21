@@ -3,6 +3,7 @@ package com.upgrade.store.api.assembler;
 import com.upgrade.store.api.dto.mapper.CategoryMapper;
 import com.upgrade.store.api.dto.request.CategoryRequest;
 import com.upgrade.store.api.dto.response.CategoryDetailResponse;
+import com.upgrade.store.api.dto.response.CategoryResponse;
 import com.upgrade.store.application.provider.CategoryProvider;
 import com.upgrade.store.domain.model.Category;
 import com.upgrade.store.domain.model.User;
@@ -23,6 +24,10 @@ public class CategoryAssembler {
         String code = categoryProvider.generateCategoryCode(categoryRequest.name());
         category.setCode(code);
         return category;
+    }
+
+    public CategoryResponse toShortResponse(Category category) {
+        return categoryMapper.mapToDto(category);
     }
 
     public CategoryDetailResponse toDetailResponse(Category category) {
