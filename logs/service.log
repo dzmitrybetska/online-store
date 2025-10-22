@@ -1,0 +1,6 @@
+2025-10-22 19:16:05.850 [http-nio-8081-exec-6] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] User with ID [1] creates a category with name [Sport]
+2025-10-22 19:16:05.932 [http-nio-8081-exec-6] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] The category with ID [6] and name [Sport] was saved successfully
+2025-10-22 19:16:28.028 [http-nio-8081-exec-7] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Attempting to delete category with ID [6]
+2025-10-22 19:16:28.043 [http-nio-8081-exec-7] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Deleted category with ID [6], name [Sport]
+2025-10-22 19:16:53.104 [http-nio-8081-exec-8] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category by ID [6]
+2025-10-22 19:16:53.109 [http-nio-8081-exec-8] WARN  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Category with ID [6] not found

@@ -15,7 +15,6 @@ public interface ProductMapper {
 
     Product mapToEntity(ProductRequest request);
 
-    @Mapping(target = "productId", expression = "java(product.getId())")
     @Mapping(target = "categoryId", expression = "java(product.getCategory().getId())")
     @Mapping(target = "discountIDs",
             expression = "java(product.getDiscounts().stream().map(discount -> discount.getId()).toList())")

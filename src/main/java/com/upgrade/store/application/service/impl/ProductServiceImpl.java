@@ -29,10 +29,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public ProductResponse saveProduct(ProductRequest request) {
-        log.debug("[SERVICE] Attempting to save new product: [{}]", request.name());
+    public ProductResponse saveProduct(ProductRequest productRequest) {
+        log.debug("[SERVICE] Attempting to save new product: [{}]", productRequest.name());
 
-        Long categoryId = request.categoryId();
+        Long categoryId = productRequest.categoryId();
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> {
                     log.warn("[SERVICE] Category with ID [{}] not found while creating product", categoryId);
@@ -46,11 +46,10 @@ public class ProductServiceImpl implements ProductService {
 
         log.debug("[SERVICE] Creating product for category [{}], sequence [{}]", category.getCode(), sequence);
 
-        Product product = productAssembler.toEntity(request, category, sku);
+        Product product = productAssembler.toEntity(productRequest, category, sku);
         Product savedProduct = productRepository.save(product);
 
         log.info("[SERVICE] Created new product with ID [{}], SKU [{}]", savedProduct.getId(), savedProduct.getSku());
-
         return productAssembler.toResponse(savedProduct);
     }
 
@@ -65,8 +64,7 @@ public class ProductServiceImpl implements ProductService {
                     return new EntityNotFoundException("Product with ID " + productId + " not found");
                 });
 
-        log.info("[SERVICE] Found product with ID [{}], name [{}]", product.getId(), product.getName());
-
+        log.info("[SERVICE] Product with ID [{}] and name [{}] was found successfully", product.getId(), product.getName());
         return productAssembler.toResponse(product);
     }
 
@@ -81,8 +79,7 @@ public class ProductServiceImpl implements ProductService {
                     return new EntityNotFoundException("Product with SKU " + sku + " not found");
                 });
 
-        log.info("[SERVICE] Found product with SKU [{}], ID [{}]", sku, product.getId());
-
+        log.info("[SERVICE] Product with SKU [{}] and name [{}] was found successfully", sku, product.getId());
         return productAssembler.toResponse(product);
     }
 
@@ -94,7 +91,6 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.getProductsByCategory_Id(categoryId);
 
         log.info("[SERVICE] Found [{}] product(s) for category ID [{}]", products.size(), categoryId);
-
         return products.stream()
                 .map(productAssembler::toResponse)
                 .toList();
@@ -109,7 +105,6 @@ public class ProductServiceImpl implements ProductService {
 
         log.debug("[SERVICE] Product IDs: {}", products.stream().map(Product::getId).toList());
         log.info("[SERVICE] Found [{}] total product(s)", products.size());
-
         return products.stream()
                 .map(productAssembler::toResponse)
                 .toList();
@@ -139,7 +134,6 @@ public class ProductServiceImpl implements ProductService {
 
         log.debug("[SERVICE] Saving updated product entity: {}", updatedProduct);
         log.info("[SERVICE] Updated product with ID [{}], name [{}]", updatedProduct.getId(), updatedProduct.getName());
-
         return productAssembler.toResponse(updatedProduct);
     }
 

@@ -41,4 +41,9 @@ public class Category extends DataEntity {
 
     @Column(name = "active", nullable = false)
     private Boolean active;
+
+    @PrePersist
+    public void prePersist() {
+        this.timeOfCreation = LocalDateTime.now();
+    }
 }

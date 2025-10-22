@@ -32,8 +32,7 @@ public class ImageServiceImpl implements ImageService {
     public List<ImageResponse> saveImages(Long productId, List<MultipartFile> files) {
         log.debug("[SERVICE] Attempting to upload {} image(s) for product ID [{}]", files.size(), productId);
 
-        Product product = productRepository
-                .findById(productId)
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> {
                     log.warn("[SERVICE] Failed to upload images — product with ID [{}] not found", productId);
                     return new EntityNotFoundException(
@@ -45,7 +44,6 @@ public class ImageServiceImpl implements ImageService {
         imageRepository.saveAll(images);
 
         log.info("[SERVICE] Uploaded [{}] image(s) for product ID [{}]", images.size(), productId);
-
         return images.stream()
                 .map(imageAssembler::toResponse)
                 .toList();
@@ -59,7 +57,6 @@ public class ImageServiceImpl implements ImageService {
         List<Image> images = imageRepository.findAllByProductId(productId);
 
         log.info("[SERVICE] Found [{}] image(s) for product ID [{}]", images.size(), productId);
-
         return images.stream()
                 .map(imageAssembler::toResponse)
                 .toList();
