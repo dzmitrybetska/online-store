@@ -1,6 +1,3 @@
-2025-10-21 20:20:51.848 [http-nio-8081-exec-5] INFO  c.u.s.a.c.CategoryController - [API] Fetching category tree
-2025-10-21 20:20:51.956 [http-nio-8081-exec-5] INFO  c.u.s.a.c.CategoryController - [API] Found [1] top-level categories
-2025-10-21 20:41:43.587 [http-nio-8081-exec-5] INFO  c.u.s.a.c.CategoryController - [API] Fetching category tree
-2025-10-21 20:42:42.580 [http-nio-8081-exec-1] INFO  c.u.s.a.c.CategoryController - [API] Fetching category by ID [1]
-2025-10-21 20:42:52.973 [http-nio-8081-exec-2] INFO  c.u.s.a.c.CategoryController - [API] Fetching category by ID [2]
-2025-10-21 20:43:02.194 [http-nio-8081-exec-3] INFO  c.u.s.a.c.CategoryController - [API] Fetching category by ID [3]
+2025-10-22 19:16:05.841 [http-nio-8081-exec-6] INFO  c.u.s.a.c.CategoryController - [API] User with ID [1] creates a category with name [Sport]
+2025-10-22 19:16:28.027 [http-nio-8081-exec-7] INFO  c.u.s.a.c.CategoryController - [API] Deleting category by ID: 6
+2025-10-22 19:16:53.102 [http-nio-8081-exec-8] INFO  c.u.s.a.c.CategoryController - [API] Fetching category by ID [6]

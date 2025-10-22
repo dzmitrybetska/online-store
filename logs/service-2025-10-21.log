@@ -1,0 +1,15 @@
+2025-10-21 20:20:51.852 [http-nio-8081-exec-5] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category tree
+2025-10-21 20:41:43.587 [http-nio-8081-exec-5] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category tree
+2025-10-21 20:41:43.651 [http-nio-8081-exec-5] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] [0] root categories found
+2025-10-21 20:42:42.581 [http-nio-8081-exec-1] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category by ID [1]
+2025-10-21 20:42:42.623 [http-nio-8081-exec-1] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Category with ID [1] and name [Catalog] was found successfully
+2025-10-21 20:42:52.973 [http-nio-8081-exec-2] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category by ID [2]
+2025-10-21 20:42:52.976 [http-nio-8081-exec-2] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Category with ID [2] and name [Electronics] was found successfully
+2025-10-21 20:43:02.195 [http-nio-8081-exec-3] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching category by ID [3]
+2025-10-21 20:43:02.197 [http-nio-8081-exec-3] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Category with ID [3] and name [Laptops] was found successfully
+2025-10-21 21:14:48.423 [http-nio-8081-exec-6] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching subcategories by parent category id [3]
+2025-10-21 21:14:48.493 [http-nio-8081-exec-6] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Found [0] total categories
+2025-10-21 21:14:52.673 [http-nio-8081-exec-4] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching subcategories by parent category id [2]
+2025-10-21 21:14:52.690 [http-nio-8081-exec-4] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Found [1] total categories
+2025-10-21 21:15:25.018 [http-nio-8081-exec-8] DEBUG c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Fetching subcategories by parent category id [1]
+2025-10-21 21:15:25.023 [http-nio-8081-exec-8] INFO  c.u.s.a.s.impl.CategoryServiceImpl - [SERVICE] Found [2] total categories

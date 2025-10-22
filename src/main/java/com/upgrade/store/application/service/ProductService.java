@@ -9,7 +9,7 @@ public interface ProductService {
 
     ProductResponse saveProduct(ProductRequest request);
 
-    ProductResponse getProductById(Long id);
+    ProductResponse getProductById(Long productId);
 
     ProductResponse getProductBySku(String sku);
 
@@ -17,7 +17,7 @@ public interface ProductService {
 
     List<ProductResponse> getAllProducts();
 
-    ProductResponse updateProduct(Long id, ProductRequest request);
+    ProductResponse updateProduct(Long productId, ProductRequest request);
 
-    void deleteProduct(Long id);
+    void deleteProduct(Long productId);
 }

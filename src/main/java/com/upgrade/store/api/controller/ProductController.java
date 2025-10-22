@@ -68,7 +68,7 @@ public class ProductController {
             @ApiResponse(responseCode = "200", description = "Product found by SKU",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ProductResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
+            @ApiResponse(responseCode = "400", description = "Invalid product ID"),
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
     public ResponseEntity<ProductResponse> getProductById(
@@ -91,7 +91,7 @@ public class ProductController {
                     responseCode = "200", description = "Product found by SKU",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ProductResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
+            @ApiResponse(responseCode = "400", description = "Invalid sku"),
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
     public ResponseEntity<ProductResponse> getProductBySku(
@@ -114,7 +114,7 @@ public class ProductController {
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
                             array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class)))
             ),
-            @ApiResponse(responseCode = "400", description = "Invalid request parameters")
+            @ApiResponse(responseCode = "400", description = "Invalid category ID")
     })
     public ResponseEntity<List<ProductResponse>> getProductsByCategory(
             @Parameter(description = "Category ID", required = true)
@@ -170,7 +170,7 @@ public class ProductController {
     @Operation(summary = "Delete product", description = "Delete product by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Product deleted successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
+            @ApiResponse(responseCode = "400", description = "Invalid product ID"),
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
     public ResponseEntity<Void> deleteProduct(

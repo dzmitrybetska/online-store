@@ -4,6 +4,7 @@ import com.upgrade.store.api.dto.mapper.CategoryMapper;
 import com.upgrade.store.api.dto.request.CategoryRequest;
 import com.upgrade.store.api.dto.response.CategoryDetailResponse;
 import com.upgrade.store.api.dto.response.CategoryResponse;
+import com.upgrade.store.api.dto.response.SubCategoryResponse;
 import com.upgrade.store.application.provider.CategoryProvider;
 import com.upgrade.store.domain.model.Category;
 import com.upgrade.store.domain.model.User;
@@ -32,5 +33,9 @@ public class CategoryAssembler {
 
     public CategoryDetailResponse toDetailResponse(Category category) {
         return categoryMapper.mapToDetailDto(category);
+    }
+
+    public SubCategoryResponse toSubResponse(Category category) {
+        return categoryMapper.mapToSubDto(category);
     }
 }

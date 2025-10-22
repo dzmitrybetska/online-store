@@ -74,7 +74,7 @@ public class ImageController {
             @ApiResponse(responseCode = "200", description = "Images retrieved successfully",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
                             array = @ArraySchema(schema = @Schema(implementation = ImageResponse.class)))),
-            @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
+            @ApiResponse(responseCode = "400", description = "Invalid image ID"),
             @ApiResponse(responseCode = "404", description = "Product not found")
     })
     public ResponseEntity<List<ImageResponse>> getImagesByProductId(

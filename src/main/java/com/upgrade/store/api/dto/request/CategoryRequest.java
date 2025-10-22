@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CategoryRequest(
-        @NotNull(message = "Required field")
         @Schema(defaultValue = "1", description = "Enter the parent category ID")
         Long parentId,
 
