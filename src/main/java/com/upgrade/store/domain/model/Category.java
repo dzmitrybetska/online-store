@@ -27,16 +27,16 @@ public class Category extends DataEntity {
     private List<Category> subCategories = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User createdByUser;
 
     @Column(name = "date_of_creation", nullable = false, updatable = false)
     private LocalDateTime timeOfCreation;
 
-    @Column(name = "name", length = 100, unique = true, nullable = false)
+    @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
-    @Column(name = "code", nullable = false, unique = true, length = 10)
+    @Column(name = "code", length = 10, nullable = false, unique = true)
     private String code;
 
     @Column(name = "active", nullable = false)

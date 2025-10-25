@@ -41,14 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
                     return new EntityNotFoundException("User with ID " + userId + " not found");
                 });
 
-        Category parentCategory = null;
-        if (parentId != null) {
-            parentCategory = categoryRepository.findById(parentId)
-                    .orElseThrow(() -> {
-                        log.warn("[SERVICE] Parent category with ID [{}] not found when creating new category", parentId);
-                        return new EntityNotFoundException("Parent category with ID " + parentId + " not found");
-                    });
-        }
+        Category parentCategory = checkParentCategory(parentId);
 
         Category category = categoryAssembler.toEntity(categoryRequest, parentCategory, user);
         Category savedCategory = categoryRepository.save(category);
@@ -97,6 +90,41 @@ public class CategoryServiceImpl implements CategoryService {
         return subCategories.stream()
                 .map(categoryAssembler::toSubResponse)
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public CategoryDetailResponse updateCategory(Long categoryId, CategoryRequest categoryRequest) {
+        Long parentId = categoryRequest.parentId();
+
+        log.debug("[Service] Attempting to update category with ID [{}] using request: {}", categoryId, categoryRequest);
+
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> {
+                    log.warn("[SERVICE] Category with ID [{}] not found when updating category", categoryId);
+                    return new EntityNotFoundException("Category with ID " + categoryId + " not found");
+                });
+
+        Category parentCategory = checkParentCategory(parentId);
+
+        Category updatedCategory = categoryAssembler.updateCategory(categoryRequest, category, parentCategory);
+        categoryRepository.save(updatedCategory);
+
+        log.debug("[SERVICE] Saving updated category entity: {}", updatedCategory);
+        log.info("[SERVICE] Updated category with ID [{}], name [{}]", updatedCategory.getId(), updatedCategory.getName());
+        return categoryAssembler.toDetailResponse(updatedCategory);
+    }
+
+    private Category checkParentCategory(Long parentId) {
+        Category parentCategory = null;
+        if (parentId != null) {
+            parentCategory = categoryRepository.findById(parentId)
+                    .orElseThrow(() -> {
+                        log.warn("[SERVICE] Parent category with ID [{}] not found", parentId);
+                        return new EntityNotFoundException("Parent category with ID " + parentId + " not found");
+                    });
+        }
+        return parentCategory;
     }
 
     @Override

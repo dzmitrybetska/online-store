@@ -17,5 +17,7 @@ public interface CategoryService {
 
     List<SubCategoryResponse> getSubCategories(Long categoryId);
 
+    CategoryDetailResponse updateCategory(Long categoryId, CategoryRequest categoryRequest);
+
     void deleteCategory(Long categoryId);
 }

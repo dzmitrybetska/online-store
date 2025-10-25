@@ -120,6 +120,31 @@ public class CategoryController {
         return new ResponseEntity<>(subCategories, HttpStatus.OK);
     }
 
+    @PutMapping(
+            value = "/{categoryId}",
+            consumes = APPLICATION_JSON_VALUE,
+            produces = APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Update category", description = "Update category with new data")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Category data updated successfully",
+                    content = @Content(mediaType = APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = CategoryDetailResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
+            @ApiResponse(responseCode = "404", description = "Category or its parent category not found ")
+    })
+    public ResponseEntity<CategoryDetailResponse> updateCategory(
+            @Parameter(description = "Category ID", required = true)
+            @PathVariable @NotNull(message = "Required field") Long categoryId,
+            @Parameter(description = "Data to update", required = true)
+            @Validated CategoryRequest categoryRequest
+    ) {
+        log.info("[API] Updating category with ID [{}] and with name [{}]", categoryId, categoryRequest.name());
+
+        CategoryDetailResponse updateCategory = categoryService.updateCategory(categoryId, categoryRequest);
+        return new ResponseEntity<>(updateCategory, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{categoryId}")
     @Operation(summary = "Delete category by ID", description = "Deletes an category by its unique ID.")
     @ApiResponses({

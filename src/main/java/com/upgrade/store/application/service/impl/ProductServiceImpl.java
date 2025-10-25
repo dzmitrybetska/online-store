@@ -129,7 +129,7 @@ public class ProductServiceImpl implements ProductService {
                 });
 
         product.setCategory(category);
-        Product updatedProduct = productAssembler.update(productRequest, product);
+        Product updatedProduct = productAssembler.updateProduct(productRequest, product);
         productRepository.save(updatedProduct);
 
         log.debug("[SERVICE] Saving updated product entity: {}", updatedProduct);
