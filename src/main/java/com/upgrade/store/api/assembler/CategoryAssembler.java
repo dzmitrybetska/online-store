@@ -38,4 +38,12 @@ public class CategoryAssembler {
     public SubCategoryResponse toSubResponse(Category category) {
         return categoryMapper.mapToSubDto(category);
     }
+
+    public Category updateCategory(CategoryRequest categoryRequest, Category category, Category parent) {
+        Category updatedCategory = categoryMapper.update(categoryRequest, category);
+        updatedCategory.setParentCategory(parent);
+        String code = categoryProvider.generateCategoryCode(categoryRequest.name());
+        updatedCategory.setCode(code);
+        return updatedCategory;
+    }
 }

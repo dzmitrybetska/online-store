@@ -28,7 +28,7 @@ public class ProductAssembler {
         return product;
     }
 
-    public Product update(ProductRequest productRequest, Product product) {
+    public Product updateProduct(ProductRequest productRequest, Product product) {
         return productMapper.update(productRequest, product);
     }
 

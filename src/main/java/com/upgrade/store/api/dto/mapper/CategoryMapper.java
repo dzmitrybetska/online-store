@@ -5,10 +5,7 @@ import com.upgrade.store.api.dto.response.CategoryDetailResponse;
 import com.upgrade.store.api.dto.response.CategoryResponse;
 import com.upgrade.store.api.dto.response.SubCategoryResponse;
 import com.upgrade.store.domain.model.Category;
-import org.mapstruct.Builder;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingConstants;
+import org.mapstruct.*;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         builder = @Builder(disableBuilder = true))
@@ -25,4 +22,6 @@ public interface CategoryMapper {
     CategoryDetailResponse mapToDetailDto(Category category);
 
     SubCategoryResponse mapToSubDto(Category category);
+
+    Category update(CategoryRequest categoryRequest, @MappingTarget Category category);
 }

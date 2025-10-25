@@ -112,8 +112,7 @@ public class ProductController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "All products from the category have been received",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
-                            array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class)))
-            ),
+                            array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class)))),
             @ApiResponse(responseCode = "400", description = "Invalid category ID")
     })
     public ResponseEntity<List<ProductResponse>> getProductsByCategory(
@@ -145,22 +144,21 @@ public class ProductController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
-    @Operation(summary = "Update product", description = "Update the product with new data")
+    @Operation(summary = "Update product", description = "Update product with new data")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Product data updated successfully",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ProductResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
-            @ApiResponse(responseCode = "404", description = "No product found for update"),
-            @ApiResponse(responseCode = "404", description = "Category not found")
+            @ApiResponse(responseCode = "404", description = "Product or it's category not found")
     })
     public ResponseEntity<ProductResponse> updateProduct(
             @Parameter(description = "Product ID", required = true)
             @PathVariable @NotNull(message = "Required field") Long productId,
-            @Parameter()
+            @Parameter(description = "Data to update", required = true)
             @Valid @RequestBody ProductRequest request
     ) {
-        log.info("[API] Updating product [{}] with new name [{}]", productId, request.name());
+        log.info("[API] Updating product with ID [{}] and with name [{}]", productId, request.name());
 
         ProductResponse productResponse = productService.updateProduct(productId, request);
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
