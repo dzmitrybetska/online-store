@@ -137,9 +137,9 @@ public class CategoryController {
             @Parameter(description = "Category ID", required = true)
             @PathVariable @NotNull(message = "Required field") Long categoryId,
             @Parameter(description = "Data to update", required = true)
-            @Validated CategoryRequest categoryRequest
+            @Valid @RequestBody CategoryRequest categoryRequest
     ) {
-        log.info("[API] Updating category with ID [{}] and with name [{}]", categoryId, categoryRequest.name());
+        log.info("[API] Updating category with ID [{}]", categoryId);
 
         CategoryDetailResponse updateCategory = categoryService.updateCategory(categoryId, categoryRequest);
         return new ResponseEntity<>(updateCategory, HttpStatus.OK);

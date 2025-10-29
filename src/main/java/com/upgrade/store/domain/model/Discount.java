@@ -20,7 +20,7 @@ import java.util.Set;
 @Table(name = "discounts")
 public class Discount extends DataEntity {
 
-    @Column(name = "discount_percent", precision = 5, scale = 2, nullable = false)
+    @Column(name = "discount_percent", precision = 4, scale = 2, nullable = false)
     private BigDecimal discountPercent;
 
     @Column(name = "discount_start", nullable = false)

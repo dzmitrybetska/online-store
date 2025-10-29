@@ -125,10 +125,10 @@ public class ProductController {
         return new ResponseEntity<>(productResponses, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     @Operation(summary = "Get all products")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "All goods received",
+            @ApiResponse(responseCode = "200", description = "All products received",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
                             array = @ArraySchema(schema = @Schema(implementation = ProductResponse.class))))
     })
@@ -158,7 +158,7 @@ public class ProductController {
             @Parameter(description = "Data to update", required = true)
             @Valid @RequestBody ProductRequest request
     ) {
-        log.info("[API] Updating product with ID [{}] and with name [{}]", productId, request.name());
+        log.info("[API] Updating product with ID [{}]", productId);
 
         ProductResponse productResponse = productService.updateProduct(productId, request);
         return new ResponseEntity<>(productResponse, HttpStatus.OK);

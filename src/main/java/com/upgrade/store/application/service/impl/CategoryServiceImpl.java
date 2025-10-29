@@ -107,8 +107,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         Category parentCategory = checkParentCategory(parentId);
 
-        Category updatedCategory = categoryAssembler.updateCategory(categoryRequest, category, parentCategory);
-        categoryRepository.save(updatedCategory);
+        categoryAssembler.updateCategory(categoryRequest, category, parentCategory);
+        Category updatedCategory = categoryRepository.save(category);
 
         log.debug("[SERVICE] Saving updated category entity: {}", updatedCategory);
         log.info("[SERVICE] Updated category with ID [{}], name [{}]", updatedCategory.getId(), updatedCategory.getName());
