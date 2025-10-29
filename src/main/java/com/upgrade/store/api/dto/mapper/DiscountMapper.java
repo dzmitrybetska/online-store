@@ -14,5 +14,6 @@ public interface DiscountMapper {
     @Mapping(target = "productIds", expression = "java(discount.getProducts().stream().map(p -> p.getId()).toList())")
     DiscountResponse mapToDto(Discount discount);
 
+    @Mapping(target = "products", ignore = true)
     Discount update(DiscountRequest discountRequest, @MappingTarget Discount discount);
 }
