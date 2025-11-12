@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: betska
+      changes:
+        - createSequence:
+            sequenceName: category_sku_seq
+            startValue: 1
+            incrementBy: 1

@@ -1,15 +1,17 @@
 spring:
   application:
     name: online_store
-  datasource:
-    url: jdbc:postgresql://localhost:5432/online_store
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: post260125DiMa
-  jpa:
-    hibernate:
-      ddl-auto: create
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
-server:
-  port: 8081
+  profiles:
+    active: dev
+
+app:
+  api:
+    uriPrefix: /api/v1
+  sku:
+    padding: 8
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
