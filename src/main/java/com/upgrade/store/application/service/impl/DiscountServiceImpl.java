@@ -35,7 +35,8 @@ public class DiscountServiceImpl implements DiscountService {
 
         Discount discount = discountMapper.mapToEntity(discountRequest);
 
-        if (discountRequest.productIds() != null && !discountRequest.productIds().isEmpty()) {
+        Set<Long> productIds = Optional.ofNullable(discountRequest.productIds()).orElse(Set.of());
+        if (!productIds.isEmpty()) {
             Set<Product> products = productRepository.findAllByIdIn(discountRequest.productIds());
             discount.setProducts(products);
         }
