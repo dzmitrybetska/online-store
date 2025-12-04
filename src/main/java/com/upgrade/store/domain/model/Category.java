@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +29,6 @@ public class Category extends DataEntity {
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User createdByUser;
 
-    @Column(name = "date_of_creation", nullable = false, updatable = false)
-    private LocalDateTime timeOfCreation;
-
     @Column(name = "name", length = 100, nullable = false, unique = true)
     private String name;
 
@@ -41,9 +37,4 @@ public class Category extends DataEntity {
 
     @Column(name = "active", nullable = false)
     private Boolean active;
-
-    @PrePersist
-    public void prePersist() {
-        this.timeOfCreation = LocalDateTime.now();
-    }
 }

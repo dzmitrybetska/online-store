@@ -1,7 +1,6 @@
 package com.upgrade.store.domain.model.common;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,13 +8,14 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.Objects;
 
+import static lombok.AccessLevel.PROTECTED;
+
 @SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = PROTECTED)
 @MappedSuperclass
-public class DataEntity {
+public abstract class DataEntity extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

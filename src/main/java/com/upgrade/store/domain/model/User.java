@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,9 +23,6 @@ public class User extends DataEntity {
 
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
-
-    @Column(name = "registered_at", nullable = false, updatable = false)
-    private LocalDateTime registeredAt;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_roles",

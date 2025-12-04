@@ -39,10 +39,5 @@ public abstract class Payment extends DataEntity {
     @Column(name = "confirmation_time")
     private LocalDateTime confirmedAt;
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
-
     public abstract PaymentMethod getMethod();
 }
