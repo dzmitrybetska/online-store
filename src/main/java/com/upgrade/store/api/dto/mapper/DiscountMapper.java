@@ -6,7 +6,8 @@ import com.upgrade.store.domain.model.Discount;
 import org.mapstruct.*;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        builder = @Builder(disableBuilder = true))
+        builder = @Builder(disableBuilder = true),
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface DiscountMapper {
 
     Discount mapToEntity(DiscountRequest discountRequest);

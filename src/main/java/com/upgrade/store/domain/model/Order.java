@@ -21,12 +21,13 @@ public class Order extends DataEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
-    private UserAccount account;
+    private Account account;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<OrderItem> items = new HashSet<>(20);
 
-    @Embedded
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "delivery_address_id")
     private DeliveryAddress address;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

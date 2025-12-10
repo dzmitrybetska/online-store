@@ -1,8 +1,8 @@
 package com.upgrade.store.api.controller;
 
 import com.upgrade.store.api.dto.request.CategoryRequest;
-import com.upgrade.store.api.dto.response.CategoryDetailResponse;
 import com.upgrade.store.api.dto.response.CategoryResponse;
+import com.upgrade.store.api.dto.response.CategoryShortResponse;
 import com.upgrade.store.api.dto.response.SubCategoryResponse;
 import com.upgrade.store.application.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,17 +44,17 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Category successfully saved",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CategoryDetailResponse.class))),
+                            schema = @Schema(implementation = CategoryResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
             @ApiResponse(responseCode = "404", description = "User not found")
     })
-    public ResponseEntity<CategoryDetailResponse> saveCategory(
+    public ResponseEntity<CategoryResponse> saveCategory(
             @Parameter(description = "CategoryRequest", required = true)
             @Valid @RequestBody CategoryRequest categoryRequest
     ) {
         log.info("[API] User with ID [{}] creates a category with name [{}]", categoryRequest.userId(), categoryRequest.name());
 
-        CategoryDetailResponse detailResponse = categoryService.saveCategory(categoryRequest);
+        CategoryResponse detailResponse = categoryService.saveCategory(categoryRequest);
         return new ResponseEntity<>(detailResponse, HttpStatus.CREATED);
     }
 
@@ -66,16 +66,16 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Category found",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CategoryDetailResponse.class))),
+                            schema = @Schema(implementation = CategoryResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid category ID"),
             @ApiResponse(responseCode = "404", description = "Category not found")
     })
-    public ResponseEntity<CategoryDetailResponse> getCategoryById(
+    public ResponseEntity<CategoryResponse> getCategoryById(
             @Parameter(description = "Category ID", required = true)
             @PathVariable @NotNull(message = "Required field") Long categoryId) {
         log.info("[API] Fetching category by ID [{}]", categoryId);
 
-        CategoryDetailResponse detailResponse = categoryService.getCategoryById(categoryId);
+        CategoryResponse detailResponse = categoryService.getCategoryById(categoryId);
         return new ResponseEntity<>(detailResponse, HttpStatus.OK);
     }
 
@@ -90,12 +90,12 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Subcategories retrieved successfully",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
-                            array = @ArraySchema(schema = @Schema(implementation = CategoryResponse.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = CategoryShortResponse.class)))),
     })
-    public ResponseEntity<List<CategoryResponse>> getCategoryTree() {
+    public ResponseEntity<List<CategoryShortResponse>> getCategoryTree() {
         log.info("[API] Fetching category tree");
 
-        List<CategoryResponse> categoryTree = categoryService.getCategoryTree();
+        List<CategoryShortResponse> categoryTree = categoryService.getCategoryTree();
         return new ResponseEntity<>(categoryTree, HttpStatus.OK);
     }
 
@@ -129,11 +129,11 @@ public class CategoryController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Category data updated successfully",
                     content = @Content(mediaType = APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CategoryDetailResponse.class))),
+                            schema = @Schema(implementation = CategoryResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid request parameters"),
             @ApiResponse(responseCode = "404", description = "Category or its parent category not found ")
     })
-    public ResponseEntity<CategoryDetailResponse> updateCategory(
+    public ResponseEntity<CategoryResponse> updateCategory(
             @Parameter(description = "Category ID", required = true)
             @PathVariable @NotNull(message = "Required field") Long categoryId,
             @Parameter(description = "Data to update", required = true)
@@ -141,7 +141,7 @@ public class CategoryController {
     ) {
         log.info("[API] Updating category with ID [{}]", categoryId);
 
-        CategoryDetailResponse updateCategory = categoryService.updateCategory(categoryId, categoryRequest);
+        CategoryResponse updateCategory = categoryService.updateCategory(categoryId, categoryRequest);
         return new ResponseEntity<>(updateCategory, HttpStatus.OK);
     }
 

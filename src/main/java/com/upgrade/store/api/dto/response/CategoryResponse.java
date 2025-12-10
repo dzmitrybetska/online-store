@@ -4,8 +4,11 @@ import java.util.List;
 
 public record CategoryResponse(
         Long id,
+        Long parentId,
+        List<SubCategoryResponse> subCategories,
+        Long userId,
         String name,
-        Boolean active,
-        List<SubCategoryResponse> subCategories
+        String code,
+        Boolean active
 ) {
 }

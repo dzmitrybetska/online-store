@@ -1,23 +1,23 @@
 package com.upgrade.store.application.service;
 
 import com.upgrade.store.api.dto.request.CategoryRequest;
-import com.upgrade.store.api.dto.response.CategoryDetailResponse;
 import com.upgrade.store.api.dto.response.CategoryResponse;
+import com.upgrade.store.api.dto.response.CategoryShortResponse;
 import com.upgrade.store.api.dto.response.SubCategoryResponse;
 
 import java.util.List;
 
 public interface CategoryService {
 
-    CategoryDetailResponse saveCategory(CategoryRequest request);
+    CategoryResponse saveCategory(CategoryRequest request);
 
-    CategoryDetailResponse getCategoryById(Long categoryId);
+    CategoryResponse getCategoryById(Long categoryId);
 
-    List<CategoryResponse> getCategoryTree();
+    List<CategoryShortResponse> getCategoryTree();
 
     List<SubCategoryResponse> getSubCategories(Long categoryId);
 
-    CategoryDetailResponse updateCategory(Long categoryId, CategoryRequest categoryRequest);
+    CategoryResponse updateCategory(Long categoryId, CategoryRequest categoryRequest);
 
     void deleteCategory(Long categoryId);
 }

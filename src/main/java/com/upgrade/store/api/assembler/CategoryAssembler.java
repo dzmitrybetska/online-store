@@ -2,8 +2,8 @@ package com.upgrade.store.api.assembler;
 
 import com.upgrade.store.api.dto.mapper.CategoryMapper;
 import com.upgrade.store.api.dto.request.CategoryRequest;
-import com.upgrade.store.api.dto.response.CategoryDetailResponse;
 import com.upgrade.store.api.dto.response.CategoryResponse;
+import com.upgrade.store.api.dto.response.CategoryShortResponse;
 import com.upgrade.store.api.dto.response.SubCategoryResponse;
 import com.upgrade.store.application.provider.CategoryProvider;
 import com.upgrade.store.domain.model.Category;
@@ -27,11 +27,11 @@ public class CategoryAssembler {
         return category;
     }
 
-    public CategoryResponse toShortResponse(Category category) {
+    public CategoryShortResponse toShortResponse(Category category) {
         return categoryMapper.mapToDto(category);
     }
 
-    public CategoryDetailResponse toDetailResponse(Category category) {
+    public CategoryResponse toDetailResponse(Category category) {
         return categoryMapper.mapToDetailDto(category);
     }
 
@@ -39,11 +39,10 @@ public class CategoryAssembler {
         return categoryMapper.mapToSubDto(category);
     }
 
-    public Category updateCategory(CategoryRequest categoryRequest, Category category, Category parent) {
+    public void updateCategory(CategoryRequest categoryRequest, Category category, Category parent) {
         Category updatedCategory = categoryMapper.update(categoryRequest, category);
         updatedCategory.setParentCategory(parent);
         String code = categoryProvider.generateCategoryCode(categoryRequest.name());
         updatedCategory.setCode(code);
-        return updatedCategory;
     }
 }

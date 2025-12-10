@@ -6,6 +6,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -16,6 +17,7 @@ import java.time.Instant;
 
 import static lombok.AccessLevel.PROTECTED;
 
+@SuperBuilder(setterPrefix = "with")
 @Getter
 @Setter
 @MappedSuperclass
@@ -28,7 +30,7 @@ public abstract class Auditable {
     private String createdBy;
 
     @CreatedDate
-    @Column(name = "created_date", nullable = false, updatable = false)
+    @Column(name = "created_date", updatable = false)
     private Instant createdDate;
 
     @LastModifiedBy

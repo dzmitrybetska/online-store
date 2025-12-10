@@ -1,7 +1,7 @@
 package com.upgrade.store.api.dto.response;
 
-public record SubCategoryResponse(
+public record ProfileShortResponse(
         Long id,
-        String name
+        String type
 ) {
 }

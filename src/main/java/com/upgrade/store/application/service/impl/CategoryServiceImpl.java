@@ -2,8 +2,8 @@ package com.upgrade.store.application.service.impl;
 
 import com.upgrade.store.api.assembler.CategoryAssembler;
 import com.upgrade.store.api.dto.request.CategoryRequest;
-import com.upgrade.store.api.dto.response.CategoryDetailResponse;
 import com.upgrade.store.api.dto.response.CategoryResponse;
+import com.upgrade.store.api.dto.response.CategoryShortResponse;
 import com.upgrade.store.api.dto.response.SubCategoryResponse;
 import com.upgrade.store.api.exception.EntityNotFoundException;
 import com.upgrade.store.application.service.CategoryService;
@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public CategoryDetailResponse saveCategory(CategoryRequest categoryRequest) {
+    public CategoryResponse saveCategory(CategoryRequest categoryRequest) {
         Long userId = categoryRequest.userId();
         Long parentId = categoryRequest.parentId();
 
@@ -53,7 +53,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public CategoryDetailResponse getCategoryById(Long categoryId) {
+    public CategoryResponse getCategoryById(Long categoryId) {
         log.debug("[SERVICE] Fetching category by ID [{}]", categoryId);
 
         Category category = categoryRepository.findById(categoryId)
@@ -68,7 +68,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<CategoryResponse> getCategoryTree() {
+    public List<CategoryShortResponse> getCategoryTree() {
         log.debug("[SERVICE] Fetching category tree");
 
         List<Category> rootCategories = categoryRepository.getAllRootCategories();
@@ -94,7 +94,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public CategoryDetailResponse updateCategory(Long categoryId, CategoryRequest categoryRequest) {
+    public CategoryResponse updateCategory(Long categoryId, CategoryRequest categoryRequest) {
         Long parentId = categoryRequest.parentId();
 
         log.debug("[Service] Attempting to update category with ID [{}] using request: {}", categoryId, categoryRequest);

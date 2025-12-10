@@ -1,18 +1,21 @@
 package com.upgrade.store.domain.model;
 
+import com.upgrade.store.domain.model.common.DataEntity;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@Builder(setterPrefix = "with")
-@Data
+@SuperBuilder(setterPrefix = "with")
+@Getter
+@Setter
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
-public class DeliveryAddress {
+@Entity
+@Table(name = "delivery_addresses")
+public class DeliveryAddress extends DataEntity {
 
     @Column(name = "zipcode", length = 6, nullable = false)
     private String zipcode;
